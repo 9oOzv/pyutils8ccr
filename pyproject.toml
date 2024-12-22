@@ -1,6 +1,6 @@
 [project]
 name = "pyutils8ccr"
-version = "0.3.0"
+version = "0.5.0"
 authors = [
   { name="9oOzv", email="miika.piiroinen@gmail.com" },
 ]

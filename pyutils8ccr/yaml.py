@@ -1,6 +1,7 @@
 from ruamel.yaml import YAML
 from functools import cache
 import sys
+from typing import IO
 
 
 @cache
@@ -25,5 +26,5 @@ def _yaml():
     return yaml
 
 
-def dump(data):
-    print(_yaml().dump(data, sys.stdout))
+def dump(data, output: IO = sys.stdout):
+    print(_yaml().dump(data, output))
