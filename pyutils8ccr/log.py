@@ -124,17 +124,18 @@ class JSONFormatter(Formatter):
         )
 
     def _format(self, record: LogRecord, message: str):
-        return self.encoder.encode(
-            {
-                'timestamp': record.created,
-                'level': record.levelname,
-                'message': message,
-                'funcName': record.funcName,
-                'lineno': record.lineno,
-                'pathname': record.pathname,
-                'module': record.module,
-            }
-        )
+        data = {
+            'timestamp': record.created,
+            'level': record.levelname,
+            'message': message,
+            'funcName': record.funcName,
+            'lineno': record.lineno,
+            'pathname': record.pathname,
+            'module': record.module,
+        }
+        if record.exc_info:
+            data['exc_info'] = self.formatException(record.exc_info)
+        return self.encoder.encode(data)
 
     def format(self, record: LogRecord):
         try:
