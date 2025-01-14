@@ -13,6 +13,7 @@ from logging import (
     LogRecord
 )
 from pathlib import Path
+import traceback
 
 
 class Encoder(json.JSONEncoder):
@@ -134,7 +135,11 @@ class JSONFormatter(Formatter):
             'module': record.module,
         }
         if record.exc_info:
-            data['exc_info'] = self.formatException(record.exc_info)
+            data['exc_info'] = {
+                'type': record.exc_info[0].__name__,
+                'message': str(record.exc_info[1]),
+                'traceback': traceback.format_tb(record.exc_info[2])
+            }
         return self.encoder.encode(data)
 
     def format(self, record: LogRecord):
