@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from tomlkit.toml_file import TOMLFile
-from tomlkit import TOMLDocument
 import re
 
 toml_file = "pyproject.toml"
@@ -40,18 +39,13 @@ def increment_toml_version() -> None:
     )
 
 
-def git_amend() -> None:
-    print("Amending git commit")
+def git_add() -> None:
     import subprocess
     subprocess.run(
         ["git", "add", toml_file]
     )
-    subprocess.run(
-        ["git", "commit", "--amend", "--no-edit"]
-    )
-    print("Git commit amended")
 
 
 if __name__ == "__main__":
     increment_toml_version()
-    git_amend()
+    git_add()
