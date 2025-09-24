@@ -212,11 +212,11 @@ def setup_logger(
     placeholder: str = None
 ):
     formatter_args = {
-            max_depth: max_depth,
-            max_str_len: max_str_len,
-            max_dict_items: max_dict_items,
-            max_list_items: max_list_items,
-            placeholder: placeholder
+            "max_depth": max_depth,
+            "max_str_len": max_str_len,
+            "max_dict_items": max_dict_items,
+            "max_list_items": max_list_items,
+            "placeholder": placeholder
     }
     formatter_args = {
         k: v
