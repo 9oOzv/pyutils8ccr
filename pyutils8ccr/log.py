@@ -175,6 +175,10 @@ def _pretty_print():
             print(line, end='')
 
 
+def pretty():
+    _pretty_print()
+
+
 def _create_logger(
         max_depth: int | None = None,
         max_str_len: int | None = None,

@@ -1,6 +1,6 @@
 [project]
 name = "pyutils8ccr"
-version = "0.23.0"
+version = "0.26.0"
 authors = [
   { name="9oOzv", email="miika.piiroinen@gmail.com" },
 ]
@@ -20,3 +20,6 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/9oOzv/pyutils8ccr"
 Issues = "https://github.com/9oOzv/pyutils8ccr/issues"
+
+[project.scripts]
+pretty = "pyutils8ccr.log:pretty"
