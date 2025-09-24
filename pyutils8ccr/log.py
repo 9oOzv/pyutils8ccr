@@ -175,7 +175,13 @@ def _pretty_print():
             print(line, end='')
 
 
-def _create_logger():
+def _create_logger(
+        max_depth: int | None = None,
+        max_str_len: int | None = None,
+        max_dict_items: int | None = None,
+        max_list_items: int | None = None,
+        placeholder: str = '...',
+    ):
     script_path = Path(sys.argv[0])
     name = (
         script_path.stem
@@ -192,6 +198,34 @@ def _create_logger():
     handler.setFormatter(JSONFormatter())
     log.addHandler(handler)
     return log
+
+
+def setup_logger(
+    max_depth: int | None = None,
+    max_str_len: int | None = None,
+    max_dict_items: int | None = None,
+    max_list_items: int | None = None,
+    placeholder: str = None
+):
+    formatter_args = {
+            max_depth: max_depth,
+            max_str_len: max_str_len,
+            max_dict_items: max_dict_items,
+            max_list_items: max_list_items,
+            placeholder: placeholder
+    }
+    formatter_args = {
+        k: v
+        for k, v in formatter_args.items()
+        if v is not None
+    }
+    formatter = JSONFormatter(**formatter_args)
+    handler = StreamHandler(sys.stderr)
+    handler.setFormatter(formatter)
+    log.handlers = []
+    log.addHandler(handler)
+
+
 
 
 if __name__ == '__main__':
