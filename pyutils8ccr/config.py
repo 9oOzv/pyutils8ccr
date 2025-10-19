@@ -2,7 +2,7 @@ from typing import Iterable
 from pathlib import Path
 import json
 from pydantic import BaseModel
-from ruamel.yaml import YAML
+from . import yaml
 
 
 class ConfigBase(BaseModel):
@@ -20,7 +20,6 @@ class ConfigBase(BaseModel):
                 continue
             with open(filepath, "r") as f:
                 if filepath.suffix in [".yaml", ".yml"]:
-                    yaml = YAML(typ='safe')
                     data = {
                         **data,
                         **yaml.load(filepath)
