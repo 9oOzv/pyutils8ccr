@@ -8,7 +8,7 @@ from . import yaml
 class ConfigBase(BaseModel):
 
     @classmethod
-    def from_file(cls, filepaths: Iterable[Path] | Path):
+    def load(cls, filepaths: Iterable[Path] | Path):
         filepaths = (
             filepaths
             if isinstance(filepaths, Iterable)
