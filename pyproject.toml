@@ -14,7 +14,8 @@ classifiers = [
 ]
 dependencies = [
     'ruamel.yaml',
-    'ruamel.yaml.string'
+    'ruamel.yaml.string',
+    'pydantic'
 ]
 
 [project.urls]
