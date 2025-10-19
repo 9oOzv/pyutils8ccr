@@ -2,6 +2,7 @@ from ruamel.yaml import YAML
 from functools import cache
 import sys
 from typing import IO
+from pathlib import Path
 
 
 @cache
@@ -28,3 +29,21 @@ def _yaml():
 
 def dump(data, output: IO = sys.stdout):
     print(_yaml().dump(data, output))
+
+
+def dumps(data) -> str:
+    from io import StringIO
+    stream = StringIO()
+    _yaml().dump(data, stream)
+    return stream.getvalue()
+
+
+def load(file: Path | str):
+    with open(file, 'r') as f:
+        return _yaml().load(f)
+
+
+def loads(s: str):
+    from io import StringIO
+    stream = StringIO(s)
+    return _yaml().load(stream)

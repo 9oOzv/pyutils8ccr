@@ -2,11 +2,8 @@ from pathlib import Path
 import os
 import shlex
 import json
-from ruamel.yaml import YAML
+from . import yaml
 from tempfile import TemporaryDirectory
-
-
-yaml = YAML(typ=['safe', 'rt', 'string'])
 
 
 def get_editor() -> Path:
@@ -61,6 +58,7 @@ def edit(
             raise Exception('Editor failed')
         return path.read_text()
 
+
 def edit_as_yaml(
     data: dict,
     filename: str = 'data.yaml'
@@ -80,6 +78,7 @@ def edit_as_yaml(
     text = yaml.dumps(data)
     text = edit(text, filename)
     return yaml.load(text)
+
 
 def edit_as_json(
     data: dict,

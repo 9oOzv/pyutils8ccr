@@ -1,8 +1,8 @@
 from typing import Iterable
 from pathlib import Path
-import yaml
 import json
 from pydantic import BaseModel
+from ruamel.yaml import YAML
 
 
 class ConfigBase(BaseModel):
@@ -20,9 +20,10 @@ class ConfigBase(BaseModel):
                 continue
             with open(filepath, "r") as f:
                 if filepath.suffix in [".yaml", ".yml"]:
+                    yaml = YAML(typ='safe')
                     data = {
                         **data,
-                        **yaml.safe_load(f)
+                        **yaml.load(filepath)
                     }
                 elif filepath.suffix == ".json":
                     data = {
