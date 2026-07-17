@@ -2,8 +2,12 @@
 import json
 import os
 import sys
-from typing import Callable
+from typing import (
+    Deque,
+    List
+)
 from itertools import islice
+import logging
 from logging import (
     getLogger,
     StreamHandler,
@@ -14,6 +18,16 @@ from logging import (
 )
 from pathlib import Path
 import traceback
+import threading
+from collections import deque
+from dataclasses import dataclass
+from typing import (
+    Deque,
+    List,
+    Optional,
+)
+from collections.abc import Callable
+from inspect import signature
 
 
 class Encoder(json.JSONEncoder):
@@ -159,6 +173,42 @@ class JSONFormatter(Formatter):
                 return json.dumps('INVALID LOG MESSAGE')
 
 
+@dataclass
+class LogEntry:
+    """A lightweight, render-agnostic snapshot of a LogRecord.
+
+    Deliberately NOT a pre-formatted string: consumers (a curses pane, a Qt
+    widget, whatever) decide how to color/truncate/layout based on `level`.
+    """
+
+    created: float
+    level: int
+    levelname: str
+    logger_name: str
+    message: str
+    exc_text: str | None = None
+
+
+class RingBufferHandler(logging.Handler):
+
+    def __init__(self, maxlen: int = 500) -> None:
+        super().__init__()
+        self._buffer: Deque[LogRecord] = deque(maxlen=maxlen)
+        self._lock = threading.Lock()
+
+    def emit(self, record: logging.LogRecord) -> None:
+        with self._lock:
+            self._buffer.append(record)
+
+    def snapshot(self) -> List[LogEntry]:
+        with self._lock:
+            return list(self._buffer)
+
+    def clear(self) -> None:
+        with self._lock:
+            self._buffer.clear()
+
+
 def _pretty_print():
     while True:
         line = sys.stdin.readline()
@@ -228,8 +278,6 @@ def setup_logger(
     handler.setFormatter(formatter)
     log.handlers = []
     log.addHandler(handler)
-
-
 
 
 if __name__ == '__main__':
